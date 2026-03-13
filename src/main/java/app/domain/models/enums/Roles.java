@@ -1,11 +1,11 @@
 package app.domain.models.enums;
 
 public enum Roles {
-    EmpleadoVentanilla,
-    AnalistaInterno,
-    EmpleadoComercial,
-    EmpleadoEmpresa,
-    SupervisorEmpresa,
-    ClienteEmpresa,
-    ClienteNatural;
+    Teller,
+    InternalAnalyst,
+    CommercialEmployee,
+    CompanyEmployee,
+    CompanySupervisor,
+    CompanyClient,
+    IndividualClient;
 }
