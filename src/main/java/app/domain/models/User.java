@@ -8,6 +8,7 @@ public abstract class User {
     String email;
     int phoneNumber;
     String address;
+    String bornDate;
     String Role;
     Boolean isActive;
 
@@ -15,7 +16,7 @@ public abstract class User {
     public User() {
     }
 
-    public User(int idUser, int idRegister, String fullName, int idIdentityCard, String email, int phoneNumber, String address, String role, Boolean isActive) {
+    public User(int idUser, int idRegister, String fullName, int idIdentityCard, String email, int phoneNumber, String address, String bornDate, String role, Boolean isActive) {
         this.idUser = idUser;
         this.idRegister = idRegister;
         this.fullName = fullName;
@@ -23,6 +24,7 @@ public abstract class User {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.bornDate = bornDate;
         Role = role;
         this.isActive = isActive;
     }
@@ -83,6 +85,14 @@ public abstract class User {
         this.address = address;
     }
 
+    public String getBornDate() {
+        return bornDate;
+    }
+
+    public void setBornDate(String bornDate) {
+        this.bornDate = bornDate;
+    }
+
     public String getRole() {
         return Role;
     }
@@ -100,7 +110,7 @@ public abstract class User {
     }
 
     @Override
-    public String toString() {
-        return "User [idUser=" + idUser + ", idRegister=" + idRegister + ", fullName=" + fullName + ", idIdentityCard=" + idIdentityCard + ", email=" + email + ", phoneNumber=" + phoneNumber + ", address=" + address + ", Role=" + Role + ", isActive=" + isActive + "]";
+    public String toString() {       
+        return "idUser: " + idUser + ", idRegister: " + idRegister + ", fullName: " + fullName + ", idIdentityCard: " + idIdentityCard + ", email: " + email + ", phoneNumber: " + phoneNumber + ", address: " + address + ", bornDate: " + bornDate + ", Role: " + Role + ", isActive: " + isActive;    
     }
 }
