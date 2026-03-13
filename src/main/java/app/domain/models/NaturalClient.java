@@ -3,7 +3,7 @@ package app.domain.models;
 import app.domain.models.enums.Roles;
 
 public class NaturalClient extends User {
-    Roles typeCostumer;
+    private Roles typeCostumer;
 
 
     public NaturalClient() {

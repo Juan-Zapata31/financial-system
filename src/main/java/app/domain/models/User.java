@@ -1,16 +1,16 @@
 package app.domain.models;
 
 public abstract class User {
-    int idUser;
-    int idRegister;
-    String fullName;
-    int idIdentityCard;
-    String email;
-    int phoneNumber;
-    String address;
-    String bornDate;
-    String Role;
-    Boolean isActive;
+    private int idUser;
+    private int idRegister;
+    private String fullName;
+    private int idIdentityCard;
+    private String email;
+    private int phoneNumber;
+    private String address;
+    private String bornDate;
+    private String Role;
+    private Boolean isActive;
 
 
     public User() {

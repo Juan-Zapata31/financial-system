@@ -3,7 +3,7 @@ package app.domain.models;
 import app.domain.models.enums.Roles;
 
 public class Employee extends User {
-    Roles typeEmployee;
+    private Roles typeEmployee;
 
     public Employee() {
     }

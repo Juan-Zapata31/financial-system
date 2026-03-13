@@ -1,12 +1,12 @@
 package app.domain.models;
 
 public class TransactionLog {
-    int idRegister;
-    String typeOperation;
-    String responsableUser;
-    String descriptionOperation;
-    String resultOperation;
-    int idOrigin;
+    private int idRegister;
+    private String typeOperation;
+    private String responsableUser;
+    private String descriptionOperation;
+    private String resultOperation;
+    private int idOrigin;
 
 
     public TransactionLog() {
@@ -71,7 +71,7 @@ public class TransactionLog {
 
     @Override
     public String toString() {
-        return "BitacoraTransacciones [idRegister=" + idRegister + ", typeOperation=" + typeOperation + ", responsableUser=" + responsableUser + ", descriptionOperation=" + descriptionOperation + ", resultOperation=" + resultOperation + ", idOrigen=" + idOrigin + "]";
+        return "TransactionLog [idRegister=" + idRegister + ", typeOperation=" + typeOperation + ", responsableUser=" + responsableUser + ", descriptionOperation=" + descriptionOperation + ", resultOperation=" + resultOperation + ", idOrigin=" + idOrigin + "]";
     }
 
 }

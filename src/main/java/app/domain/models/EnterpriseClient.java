@@ -1,9 +1,9 @@
 package app.domain.models;
 
 public class EnterpriseClient extends User {
-    String companyName;
-    int nit;
-    String legalRepresentative;
+    private String companyName;
+    private int nit;
+    private String legalRepresentative;
 
     public EnterpriseClient() {
     }

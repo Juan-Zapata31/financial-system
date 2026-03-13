@@ -1,14 +1,14 @@
 package app.domain.models;
 
 public class Transaction{
-    int idTrasaction;
-    int accountOrigin;
-    int accountDestination;
-    double amount;
-    String typeCoin;
-    boolean statusTrasaction;
-    String typeTransaction;
-    String descriptionTransaction;
+    private int idTrasaction;
+    private int accountOrigin;
+    private int accountDestination;
+    private double amount;
+    private String typeCoin;
+    private boolean statusTrasaction;
+    private String typeTransaction;
+    private String descriptionTransaction;
 
     public Transaction() {
     }
