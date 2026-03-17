@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="https://readme-typing-svg.demolab.com?font=Cinzel+Decorative&size=38&duration=3000&pause=1000&color=C9A84C&center=true&vCenter=true&width=700&lines=🏦+Bank+API;Banking+System+REST+API;By+Juan+Zapata" alt="Typing SVG" />
-
 <br/>
 
 <p>
@@ -96,8 +94,6 @@ GET    /api/transactions/{id}    → Get transaction history
 <div align="center">
 
 <br/>
-
-<img src="https://readme-typing-svg.demolab.com?font=Cinzel&size=22&duration=4000&pause=1000&color=C9A84C&center=true&vCenter=true&width=500&lines=Juan+Zapata;Backend+Developer+·+Java+%26+Spring+Boot" alt="Author" />
 
 <br/>
 
