@@ -52,11 +52,9 @@ The architecture follows the **client-server model**: the backend exposes resour
 | 🍃 **Spring Boot** | 3.x | Framework for building web apps and REST APIs quickly |
 | 🔗 **Spring Web (MVC)** | — | REST controllers and HTTP request handling |
 | 🗄️ **Spring Data JPA** | — | Data persistence abstraction with repositories |
-| 🐘 **Hibernate** | — | ORM for object-relational mapping between Java and the database |
 | 📦 **Maven** | 3.x | Dependency management and project build lifecycle |
 | 🔒 **Spring Security** *(optional)* | — | Endpoint authentication and authorization |
-| 🗃️ **H2 / MySQL / PostgreSQL** | — | Relational database for data persistence |
-| 🧪 **JUnit 5** | — | Unit and integration testing |
+| 🗃️ **MySQL** | — | Relational database for data persistence |
 
 ---
 
@@ -74,18 +72,6 @@ cd Bank
 # http://localhost:8080
 ```
 
----
-
-## 📡 Main Endpoints
-
-```
-GET    /api/customers            → List all customers
-POST   /api/customers            → Create a new customer
-GET    /api/accounts/{id}        → Get an account by ID
-POST   /api/accounts             → Create a new bank account
-POST   /api/transactions         → Perform a deposit or withdrawal
-GET    /api/transactions/{id}    → Get transaction history
-```
 
 ---
 
