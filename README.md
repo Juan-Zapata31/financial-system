@@ -30,7 +30,6 @@ This API allows you to manage:
 - 👤 **Customers** — registration and lookup of account holders
 - 🏦 **Bank Accounts** — creation and management of accounts (savings, checking)
 - 💸 **Transactions** — deposits, withdrawals, and transfers between accounts
-- 📊 **Balance Queries** — real-time financial status of any account
 
 The architecture follows the **client-server model**: the backend exposes resources and clients consume them via `GET`, `POST`, `PUT`, and `DELETE` HTTP requests.
 
@@ -90,5 +89,5 @@ cd Bank
 ---
 
 <div align="center">
-  <sub>© 2025 Juan Zapata · MIT License</sub>
+  <sub>© 2026 Juan Zapata · MIT License</sub>
 </div>
