@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.Currency;
 
+import app.domain.models.enums.TransactionState;
+import app.domain.models.enums.TransactionType;
 import lombok.AllArgsConstructor;
 
 @Getter
@@ -15,11 +17,11 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class Transaction{
     private int transactionId;
-    private Account accountOrigin;
-    private Account accountDestination;
+    private Account originAccount;
+    private Account destinationAccount;
     private BigDecimal amount;
     private Currency currency;
-    private boolean statusTrasaction;
-    private String typeTransaction;
-    private String descriptionTransaction;
+    private TransactionState transactionState;
+    private TransactionType transactionType;
+    private String description;
 }
