@@ -96,7 +96,7 @@ cd Bank
 
 <br/>
 
-![Construcción de Software](https://img.shields.io/badge/Subject-Construcción%20de%20Software-2ea44f)
+![Asignatura](https://img.shields.io/badge/Asignatura-Construcción%20de%20Software-181717?style=for-the-badge&logo=bookstack&logoColor=white)
 
 </div>
 
