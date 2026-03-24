@@ -12,7 +12,7 @@
 
 <br/>
 
-> **RESTful Web API for a banking system for my assignature: "Construcción de Software 2"** — developed by **Juan Zapata**   
+> **RESTful Web API for a banking system for my subject: "Construcción de Software 2"** — developed by **Juan Zapata**   
 > Manage accounts, customers, and transactions through a Java + Spring Boot backend architecture.
 
 <br/>
