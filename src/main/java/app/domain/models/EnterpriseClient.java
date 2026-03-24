@@ -9,8 +9,8 @@ import lombok.AllArgsConstructor;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EnterpriseClient extends User {
+public class EnterpriseClient extends Client {
     private String companyName;
-    private int nit;
+    private String nit;
     private String legalRepresentative;
 }

@@ -1,6 +1,7 @@
 package app.domain.models;
 
-import app.domain.models.enums.Roles;
+import java.time.LocalDate;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,6 @@ import lombok.AllArgsConstructor;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class NaturalClient extends User {
-    private Roles typeCostumer;
+public class NaturalClient extends Client {
+    private LocalDate birthDate;
 }

@@ -12,8 +12,8 @@ import lombok.AllArgsConstructor;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class User {
-    private int idUser;
+public class User {
+    private int userId;
     private int idRegister;
     private String fullName;
     private int idIdentityCard;

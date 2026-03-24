@@ -3,6 +3,8 @@ package app.domain.models;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
+import app.domain.models.enums.TransactionState;
+import app.domain.models.enums.TransactionType;
 import lombok.AllArgsConstructor;
 
 @Getter
@@ -10,10 +12,10 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TransactionLog {
-    private int idRegister;
-    private String typeOperation;
+    private int registerId;
+    private TransactionType transactionType;
     private String responsableUser;
-    private String descriptionOperation;
-    private String resultOperation;
-    private int idOrigin;
+    private String description;
+    private TransactionState transactionState;
+    private Account originAccount;
 }
