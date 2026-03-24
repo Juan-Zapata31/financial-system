@@ -88,6 +88,20 @@ cd Bank
 
 ---
 
+## 📚 Subject
+
+<div align="center">
+
+<br/>
+
+<br/>
+
+![Construcción de Software](https://img.shields.io/badge/Subject-Construcción%20de%20Software-2ea44f)
+
+</div>
+
+---
+
 <div align="center">
   <sub>© 2026 Juan Zapata · MIT License</sub>
 </div>
