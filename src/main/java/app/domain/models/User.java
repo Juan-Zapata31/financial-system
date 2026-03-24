@@ -3,6 +3,9 @@ package app.domain.models;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+
 import app.domain.models.enums.Roles;
 import app.domain.models.enums.UserState;
 import lombok.AllArgsConstructor;
@@ -21,6 +24,6 @@ public abstract class User {
     private String phoneNumber;
     private String address;
     private LocalDate birthDate;
-    private Roles role;
+    private Roles roles;
     private UserState userState;
 }
