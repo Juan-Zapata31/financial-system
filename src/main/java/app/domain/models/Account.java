@@ -3,6 +3,11 @@ package app.domain.models;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Currency;
+import app.domain.models.enums.AccountState;
+import app.domain.models.enums.AccountType;
 import lombok.AllArgsConstructor;
 
 @Getter
@@ -10,10 +15,10 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Account {
-    private int idAccount;
-    private String typeAccount;
-    private double currentAmount;
-    private String coin;
-    private boolean statusAccount;
-    private String creationDate;
+    private int accountId;
+    private AccountType accountType;
+    private BigDecimal balance;
+    private Currency currency;
+    private AccountState accountState;
+    private LocalDate creationDate;
 }

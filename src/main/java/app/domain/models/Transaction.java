@@ -3,6 +3,10 @@ package app.domain.models;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.util.Currency;
+
 import lombok.AllArgsConstructor;
 
 @Getter
@@ -10,11 +14,11 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Transaction{
-    private int idTrasaction;
-    private int accountOrigin;
-    private int accountDestination;
-    private double amount;
-    private String typeCoin;
+    private int transactionId;
+    private Account accountOrigin;
+    private Account accountDestination;
+    private BigDecimal amount;
+    private Currency currency;
     private boolean statusTrasaction;
     private String typeTransaction;
     private String descriptionTransaction;
