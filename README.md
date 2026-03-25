@@ -2,6 +2,24 @@
 
 <br/>
 
+---
+
+## 📚 Subject
+
+<div align="center">
+
+<br/>
+
+<br/>
+
+![Asignatura](https://img.shields.io/badge/Subject-Construcción%20de%20Software_2-181717?style=for-the-badge&logo=bookstack&logoColor=white)
+
+</div>
+
+---
+
+<br/>
+
 <p>
   <img src="https://img.shields.io/badge/Java-17+-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white"/>
   <img src="https://img.shields.io/badge/Spring_Boot-3.x-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white"/>
@@ -86,21 +104,6 @@ cd Bank
 
 </div>
 
----
-
-## 📚 Subject
-
-<div align="center">
-
-<br/>
-
-<br/>
-
-![Asignatura](https://img.shields.io/badge/Subject-Construcción%20de%20Software_2-181717?style=for-the-badge&logo=bookstack&logoColor=white)
-
-</div>
-
----
 
 <div align="center">
   <sub>© 2026 Juan Zapata · MIT License</sub>
