@@ -2,12 +2,11 @@ package app.domain.ports;
 
 import java.util.List;
 
+import app.domain.models.BankLoan;
+
 public interface LoanPort {
 
-    public LoanPort requestLoan(LoanPort loan);
-    public LoanPort getLoanById(String loanId);
-    public List<LoanPort> getLoansByClient(String clientId);
-    public void approveLoan(String loanId);
-    public void rejectLoan(String loanId);
-
+    BankLoan save(BankLoan loan);
+    BankLoan findById(String loanId);
+    List<BankLoan> findByClientId(String bankLoanId);
 }

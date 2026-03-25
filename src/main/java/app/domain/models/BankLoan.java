@@ -26,5 +26,10 @@ public class BankLoan {
     private LoanState loanState;
     private LocalDate approvedDate;
     private LocalDate disbursementDate;
-    private Account destinationAccount;
+    private int destinationAccount;
+
+
+    public int getDestinationAccount() {
+        return destinationAccount;
+    }
 }
