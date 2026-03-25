@@ -4,8 +4,6 @@
 
 <br/>
 
-<br/>
-
 ![Asignatura](https://img.shields.io/badge/Subject-Construcción%20de%20Software_2-181717?style=for-the-badge&logo=bookstack&logoColor=white)
 
 </div>
