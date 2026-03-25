@@ -2,8 +2,6 @@
 
 <br/>
 
-## 📚 Subject
-
 <div align="center">
 
 <br/>
