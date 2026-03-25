@@ -2,8 +2,6 @@
 
 <br/>
 
----
-
 ## 📚 Subject
 
 <div align="center">
@@ -104,6 +102,9 @@ cd Bank
 
 </div>
 
+---
+
+<br/>
 
 <div align="center">
   <sub>© 2026 Juan Zapata · MIT License</sub>
