@@ -1,11 +1,12 @@
 package app.domain.ports;
-
+import app.domain.models.Transaction;
 import java.util.List;
 
 public interface TransferPort {
 
-    public TransferPort makeTransfer(TransferPort transfer);
-    public TransferPort getTransferById(String transferId);
-    public List<TransferPort> getTransfersByAccount(String accountNumber);
+    Transaction save(Transaction transaction);
+    Transaction findById(String transferId);
+    List<Transaction> findByAccount(String accountNumber);
+    List<Transaction> findPendingTransfers();
 
 }
