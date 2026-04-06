@@ -1,4 +1,4 @@
-package app.domain.application.services;
+package app.domain.services;
 
 import app.domain.models.BankLoan;
 
