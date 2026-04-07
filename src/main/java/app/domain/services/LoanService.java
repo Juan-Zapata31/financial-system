@@ -28,54 +28,89 @@ public class LoanService {
         this.accountPort = accountPort;
     }
 
+    // 🟢 CREAR SOLICITUD
     public BankLoan requestLoan(BankLoan loan) {
-        loan.setLoanState(LoanState.PENDING);
+
+        loan.setLoanState(LoanState.PENDING); // "En estudio"
         return loanPort.save(loan);
     }
 
-    //SIN PERMISOS PARA RECHAZAR O APROBAR, SOLO ANALISTAS INTERNOS
+    // 🔵 APROBAR
     public BankLoan approveLoan(String loanId, User user) {
 
-        if (user.getRoles() != Roles.InternalAnalyst) {
+        if (user == null || user.getRoles() != Roles.InternalAnalyst) {
             throw new BusinessException("NO_PERMISOS_APROBAR", "No tiene permisos para aprobar");
         }
 
         BankLoan loan = loanPort.findById(loanId);
+        if (loan == null) {
+            throw new BusinessException("LOAN_NOT_FOUND", "El préstamo no existe");
+        }
+
+        if (loan.getLoanState() != LoanState.PENDING) {
+            throw new BusinessException("INVALID_STATE", "El préstamo no está en estudio");
+        }
+
         loan.setLoanState(LoanState.APPROVED);
 
         return loanPort.save(loan);
     }
 
-    //SIN PERMISOS PARA RECHAZAR O APROBAR, SOLO ANALISTAS INTERNOS
+    // 🔴 RECHAZAR
     public BankLoan rejectLoan(String loanId, User user) {
 
-        if (user.getRoles() != Roles.InternalAnalyst) {
+        if (user == null || user.getRoles() != Roles.InternalAnalyst) {
             throw new BusinessException("NO_PERMISOS_RECHAZAR", "No tiene permisos para rechazar");
         }
 
         BankLoan loan = loanPort.findById(loanId);
+        if (loan == null) {
+            throw new BusinessException("LOAN_NOT_FOUND", "El préstamo no existe");
+        }
+
+        if (loan.getLoanState() != LoanState.PENDING) {
+            throw new BusinessException("INVALID_STATE", "El préstamo no está en estudio");
+        }
+
         loan.setLoanState(LoanState.REJECTED);
 
         return loanPort.save(loan);
     }
 
-    //DESEMBOLSO DE DINERO PARA EL PRÉSTAMO APROBADO
+    // 💰 DESEMBOLSO
     public void disburseLoan(String loanId) {
+
         BankLoan loan = loanPort.findById(loanId);
+        if (loan == null) {
+            throw new BusinessException("LOAN_NOT_FOUND", "El préstamo no existe");
+        }
 
         if (loan.getLoanState() != LoanState.APPROVED) {
-            throw new BusinessException("PRÉSTAMO_NO_APROBADO", "El préstamo no está aprobado");
+            throw new BusinessException("LOAN_NOT_APPROVED", "El préstamo no está aprobado");
+        }
+
+        if (loan.getApprovedAmount() == null ||
+            loan.getApprovedAmount().compareTo(BigDecimal.ZERO) <= 0) {
+
+            throw new BusinessException("INVALID_AMOUNT", "El monto aprobado debe ser mayor a cero");
         }
 
         Account account = accountPort.findByNumber(loan.getDestinationAccount());
-
-        if (account.getAccountState() != AccountState.ACTIVE) {
-            throw new BusinessException("CUENTA_NO_ACTIVA", "La cuenta destino no está activa");
+        if (account == null) {
+            throw new BusinessException("ACCOUNT_NOT_FOUND", "La cuenta destino no existe");
         }
 
-        BigDecimal newBalance = account.getBalance().add(loan.getApprovedAmount());
-        account.setBalance(newBalance);
+        if (account.getAccountState() != AccountState.ACTIVE) {
+            throw new BusinessException("ACCOUNT_NOT_ACTIVE", "La cuenta destino no está activa");
+        }
+
+        // 💸 Aumentar saldo
+        account.setBalance(account.getBalance().add(loan.getApprovedAmount()));
+
+        // 🔄 Cambiar estado
         loan.setLoanState(LoanState.DISBURDSED);
+
+        // 💾 Guardar
         accountPort.save(account);
         loanPort.save(loan);
     }
