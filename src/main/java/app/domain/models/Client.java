@@ -17,7 +17,7 @@ import lombok.Setter;
 public abstract class Client {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Generación automática del ID
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Generación automática del ID para las tablas
     private Long clientId;
     private User user;
     private String fullName;
