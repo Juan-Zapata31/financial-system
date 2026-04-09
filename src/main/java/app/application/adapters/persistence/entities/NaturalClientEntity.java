@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "natural_clients")
 public class NaturalClientEntity extends ClientEntity {
 
     private LocalDate birthDate;

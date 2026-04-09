@@ -3,7 +3,7 @@ package app.application.adapters.api.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import app.domain.models.BankLoan;
+import app.application.adapters.persistence.entities.BankLoanEntity;
 import app.domain.models.User;
 import app.domain.services.LoanService;
 
@@ -16,19 +16,19 @@ public class LoanController {
 
     // 🟢 Crear solicitud
     @PostMapping
-    public BankLoan requestLoan(@RequestBody BankLoan loan) {
+    public BankLoanEntity requestLoan(@RequestBody BankLoanEntity loan) {
         return loanService.requestLoan(loan);
     }
 
     // 🔵 Aprobar préstamo
     @PostMapping("/{id}/approve")
-    public BankLoan approveLoan(@PathVariable String id, @RequestBody User user) {
+    public BankLoanEntity approveLoan(@PathVariable String id, @RequestBody User user) {
         return loanService.approveLoan(id, user);
     }
 
     // 🔴 Rechazar préstamo
     @PostMapping("/{id}/reject")
-    public BankLoan rejectLoan(@PathVariable String id, @RequestBody User user) {
+    public BankLoanEntity rejectLoan(@PathVariable String id, @RequestBody User user) {
         return loanService.rejectLoan(id, user);
     }
 

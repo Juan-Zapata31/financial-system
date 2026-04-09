@@ -1,12 +1,11 @@
 package app.domain.services;
 
-import app.domain.models.BankLoan;
-
 import java.math.BigDecimal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import app.application.adapters.persistence.entities.BankLoanEntity;
 import app.domain.exceptions.BusinessException;
 import app.domain.models.Account;
 import app.domain.models.User;
@@ -29,20 +28,20 @@ public class LoanService {
     }
 
     // 🟢 CREAR SOLICITUD
-    public BankLoan requestLoan(BankLoan loan) {
+    public BankLoanEntity requestLoan(BankLoanEntity loan) {
 
         loan.setLoanState(LoanState.PENDING); // "En estudio"
         return loanPort.save(loan);
     }
 
     // 🔵 APROBAR
-    public BankLoan approveLoan(String loanId, User user) {
+    public BankLoanEntity approveLoan(String loanId, User user) {
 
         if (user == null || user.getRoles() != Roles.InternalAnalyst) {
             throw new BusinessException("NO_PERMISOS_APROBAR", "No tiene permisos para aprobar");
         }
 
-        BankLoan loan = loanPort.findById(loanId);
+        BankLoanEntity loan = loanPort.findById(loanId);
         if (loan == null) {
             throw new BusinessException("LOAN_NOT_FOUND", "El préstamo no existe");
         }
@@ -57,13 +56,13 @@ public class LoanService {
     }
 
     // 🔴 RECHAZAR
-    public BankLoan rejectLoan(String loanId, User user) {
+    public BankLoanEntity rejectLoan(String loanId, User user) {
 
         if (user == null || user.getRoles() != Roles.InternalAnalyst) {
             throw new BusinessException("NO_PERMISOS_RECHAZAR", "No tiene permisos para rechazar");
         }
 
-        BankLoan loan = loanPort.findById(loanId);
+        BankLoanEntity loan = loanPort.findById(loanId);
         if (loan == null) {
             throw new BusinessException("LOAN_NOT_FOUND", "El préstamo no existe");
         }
@@ -80,7 +79,7 @@ public class LoanService {
     // 💰 DESEMBOLSO
     public void disburseLoan(String loanId) {
 
-        BankLoan loan = loanPort.findById(loanId);
+        BankLoanEntity loan = loanPort.findById(loanId);
         if (loan == null) {
             throw new BusinessException("LOAN_NOT_FOUND", "El préstamo no existe");
         }

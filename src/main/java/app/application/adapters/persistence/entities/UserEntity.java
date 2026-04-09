@@ -15,6 +15,7 @@ import app.domain.models.enums.UserState;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class UserEntity {
 
     @Id

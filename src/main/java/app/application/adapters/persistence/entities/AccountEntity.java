@@ -8,6 +8,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import app.domain.models.enums.AccountState;
+import app.domain.models.enums.AccountType;
 
 
 @Getter
@@ -20,11 +21,14 @@ public class AccountEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int accountId;
-    private Long clientId;
-    private String accountType;
+    private Integer accountId;
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private ClientEntity client;
+    @Enumerated(EnumType.STRING)
+    private AccountType accountType;
     private BigDecimal balance;
-    private String currency;
+    private String currency; // simplificado
     @Enumerated(EnumType.STRING)
     private AccountState accountState;
     private LocalDate creationDate;

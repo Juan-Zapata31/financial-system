@@ -1,5 +1,6 @@
 package app.application.adapters.persistence.entities;
 
+import app.domain.models.enums.Roles;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,8 +14,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "employees")
 public class EmployeeEntity extends UserEntity {
 
-    private String typeEmployee;
+    @Enumerated(EnumType.STRING)
+    private Roles typeEmployee;
 }

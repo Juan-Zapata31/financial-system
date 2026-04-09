@@ -13,7 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "enterprise_clients")
 public class EnterpriseClientEntity extends ClientEntity {
 
     private String companyName;

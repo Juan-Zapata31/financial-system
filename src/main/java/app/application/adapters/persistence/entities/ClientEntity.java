@@ -11,17 +11,21 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "clients")
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class ClientEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long clientId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+
     private String fullName;
     private String documentNumber;
     private String email;
     private String phone;
     private String address;
-    private Long userId;
 }

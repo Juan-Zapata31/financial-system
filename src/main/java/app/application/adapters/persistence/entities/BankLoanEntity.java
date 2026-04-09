@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
+import app.domain.models.enums.BankLoanType;
 import app.domain.models.enums.LoanState;
 
 
@@ -20,16 +22,19 @@ public class BankLoanEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int bankLoanId;
-    private String bankLoanType;
-    private int clientId;
+    private Integer bankLoanId;
+    @Enumerated(EnumType.STRING)
+    private BankLoanType bankLoanType;
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private ClientEntity client;
     private BigDecimal requestedAmount;
     private BigDecimal approvedAmount;
     private BigDecimal interestRate;
-    private int termMonths;
+    private Integer termMonths;
     @Enumerated(EnumType.STRING)
     private LoanState loanState;
     private LocalDate approvedDate;
     private LocalDate disbursementDate;
-    private int destinationAccount;
+    private Integer destinationAccount;
 }
