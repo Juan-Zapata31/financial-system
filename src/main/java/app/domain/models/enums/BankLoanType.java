@@ -1,7 +1,6 @@
 package app.domain.models.enums;
 
-public enum BankLoanType 
-    {
+public enum BankLoanType {
         PERSONAL,
         MORTGAGE,
         VEHICLE,

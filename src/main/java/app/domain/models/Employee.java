@@ -12,5 +12,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 
 public class Employee extends User {
+    private Long employeeId;
     private Roles typeEmployee;
 }

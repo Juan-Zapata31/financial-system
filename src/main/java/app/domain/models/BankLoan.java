@@ -3,10 +3,8 @@ package app.domain.models;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
 import app.domain.models.enums.BankLoanType;
 import app.domain.models.enums.LoanState;
 import lombok.AllArgsConstructor;
@@ -18,7 +16,7 @@ import lombok.AllArgsConstructor;
 public class BankLoan {
     private int bankLoanId;
     private BankLoanType bankLoanType;
-    private int applicantId; //Modificar cuando cree el cliente
+    private int clientId;
     private BigDecimal requestedAmount;
     private BigDecimal approvedAmount;
     private BigDecimal interestRate;
@@ -26,5 +24,5 @@ public class BankLoan {
     private LoanState loanState;
     private LocalDate approvedDate;
     private LocalDate disbursementDate;
-    private Account destinationAccount;
+    private int destinationAccount;
 }

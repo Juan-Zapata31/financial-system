@@ -1,5 +1,4 @@
 package app.domain.models;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -16,6 +15,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class Account {
     private int accountId;
+    private Client client;
     private AccountType accountType;
     private BigDecimal balance;
     private Currency currency;

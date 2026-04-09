@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GeneralBankingProduct {
+
     private int idGeneralBankingProduct;
     private String nameGeneralBankingProduct;
     private String categoryGeneralBankingProduct;

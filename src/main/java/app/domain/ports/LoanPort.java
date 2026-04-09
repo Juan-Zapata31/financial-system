@@ -2,12 +2,11 @@ package app.domain.ports;
 
 import java.util.List;
 
+import app.application.adapters.persistence.entities.BankLoanEntity;
+
 public interface LoanPort {
 
-    public LoanPort requestLoan(LoanPort loan);
-    public LoanPort getLoanById(String loanId);
-    public List<LoanPort> getLoansByClient(String clientId);
-    public void approveLoan(String loanId);
-    public void rejectLoan(String loanId);
-
+    BankLoanEntity save(BankLoanEntity loan);
+    BankLoanEntity findById(String loanId);
+    List<BankLoanEntity> findByClientId(Integer clientId);
 }

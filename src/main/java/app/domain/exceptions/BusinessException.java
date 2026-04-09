@@ -2,8 +2,14 @@ package app.domain.exceptions;
 
 public class BusinessException extends RuntimeException {
 
-    public BusinessException(String message) {
+    private String code;
+
+    public BusinessException(String code, String message) {
         super(message);
+        this.code = code;
     }
-    
+
+    public String geString(){
+        return code;
+    }
 }
