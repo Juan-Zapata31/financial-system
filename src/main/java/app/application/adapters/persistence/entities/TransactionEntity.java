@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import app.domain.models.enums.Currency;
 import app.domain.models.enums.TransactionState;
 import app.domain.models.enums.TransactionType;
 
@@ -26,7 +27,8 @@ public class TransactionEntity {
     private Integer originAccount;
     private Integer destinationAccount;
     private BigDecimal amount;
-    private String currency;
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
     @Enumerated(EnumType.STRING)
     private TransactionState transactionState;
     @Enumerated(EnumType.STRING)

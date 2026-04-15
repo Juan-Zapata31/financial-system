@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Currency;
 
+import app.domain.models.enums.Currency;
 import app.domain.models.enums.TransactionState;
 import app.domain.models.enums.TransactionType;
 import lombok.AllArgsConstructor;

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import app.domain.models.enums.Roles;
 import app.domain.models.enums.UserState;
 
 
@@ -23,7 +24,8 @@ public class UserEntity {
     private Long userId;
     private String username;
     private String password;
-    private String roles;
+    @Enumerated(EnumType.STRING)
+    private Roles roles;
     @Enumerated(EnumType.STRING)
     private UserState userState;
 }
