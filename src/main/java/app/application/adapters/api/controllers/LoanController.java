@@ -5,37 +5,49 @@ import org.springframework.web.bind.annotation.*;
 
 import app.application.adapters.persistence.entities.BankLoanEntity;
 import app.domain.models.User;
-import app.domain.services.LoanService;
+import app.domain.services.ApproveLoan;
+import app.domain.services.DisburseLoan;
+import app.domain.services.RejectLoan;
+import app.domain.services.RequestLoan;
 
 @RestController
 @RequestMapping("/loans")
 public class LoanController {
 
     @Autowired
-    private LoanService loanService;
+    private RequestLoan requestLoan;
+
+    @Autowired
+    private ApproveLoan approveLoan;
+
+    @Autowired
+    private RejectLoan rejectLoan;
+
+    @Autowired
+    private DisburseLoan disburseLoan;
 
     // 🟢 Crear solicitud
     @PostMapping
     public BankLoanEntity requestLoan(@RequestBody BankLoanEntity loan) {
-        return loanService.requestLoan(loan);
+        return requestLoan.requestLoan(loan);
     }
 
     // 🔵 Aprobar préstamo
     @PostMapping("/{id}/approve")
     public BankLoanEntity approveLoan(@PathVariable String id, @RequestBody User user) {
-        return loanService.approveLoan(id, user);
+        return approveLoan.approveLoan(id, user);
     }
 
     // 🔴 Rechazar préstamo
     @PostMapping("/{id}/reject")
     public BankLoanEntity rejectLoan(@PathVariable String id, @RequestBody User user) {
-        return loanService.rejectLoan(id, user);
+        return rejectLoan.rejectLoan(id, user);
     }
 
     // 💰 Desembolso
     @PostMapping("/{id}/disburse")
     public String disburseLoan(@PathVariable String id) {
-        loanService.disburseLoan(id);
+        disburseLoan.disburseLoan(id);
         return "Préstamo desembolsado correctamente";
     }
 }
