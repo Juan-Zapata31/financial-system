@@ -4,9 +4,9 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Currency;
 import app.domain.models.enums.AccountState;
 import app.domain.models.enums.AccountType;
+import app.domain.models.enums.Currency;
 import lombok.AllArgsConstructor;
 
 @Getter

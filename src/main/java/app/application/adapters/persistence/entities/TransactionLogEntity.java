@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import app.domain.models.enums.TransactionState;
+import app.domain.models.enums.TransactionType;
 
 
 @Getter
@@ -19,7 +20,8 @@ public class TransactionLogEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int registerId;
-    private String transactionType;
+    @Enumerated(EnumType.STRING)
+    private TransactionType transactionType;
     private String responsableUser;
     private String description;
     @Enumerated(EnumType.STRING)

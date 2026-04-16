@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import app.domain.models.enums.AccountState;
 import app.domain.models.enums.AccountType;
+import app.domain.models.enums.Currency;
 
 
 @Getter
@@ -28,7 +29,8 @@ public class AccountEntity {
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
     private BigDecimal balance;
-    private String currency; // simplificado
+    @Enumerated(EnumType.STRING)
+    private Currency currency;
     @Enumerated(EnumType.STRING)
     private AccountState accountState;
     private LocalDate creationDate;
