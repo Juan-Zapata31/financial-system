@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import app.domain.models.Account;
+import app.application.adapters.persistence.entities.AccountEntity;
 
-public interface AccountRepository extends JpaRepository<Account, String> {
+public interface AccountRepository extends JpaRepository<AccountEntity, Integer> {
 
-    Account findByNumber(int number);
-    List<Account> findByClientId(String clientId);
+    AccountEntity findByNumber(int number);
+    List<AccountEntity> findByClientId(String clientId);
 }

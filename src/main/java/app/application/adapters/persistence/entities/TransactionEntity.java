@@ -35,4 +35,6 @@ public class TransactionEntity {
     private TransactionType transactionType;
     private String description;
     private LocalDateTime createdAt;
+    private Long creatorUserId;
+    private Long approverUserId;
 }

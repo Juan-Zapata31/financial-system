@@ -1,22 +1,21 @@
 package app.domain.models;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
 import app.domain.models.enums.Currency;
 import app.domain.models.enums.TransactionState;
 import app.domain.models.enums.TransactionType;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Transaction{
+public class Transaction {
     private int transactionId;
     private int originAccount;
     private int destinationAccount;
@@ -26,4 +25,6 @@ public class Transaction{
     private TransactionType transactionType;
     private String description;
     private LocalDateTime createdAt;
+    private Long creatorUserId;
+    private Long approverUserId;
 }

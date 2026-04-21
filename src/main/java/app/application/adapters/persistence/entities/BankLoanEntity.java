@@ -37,4 +37,5 @@ public class BankLoanEntity {
     private LocalDate approvedDate;
     private LocalDate disbursementDate;
     private Integer destinationAccount;
+    private Long analystId;
 }

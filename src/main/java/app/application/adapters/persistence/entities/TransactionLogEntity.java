@@ -1,12 +1,20 @@
 package app.application.adapters.persistence.entities;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import app.domain.models.enums.TransactionState;
 import app.domain.models.enums.TransactionType;
+import app.domain.models.enums.TransactionState;
 
 
 @Getter
@@ -26,5 +34,6 @@ public class TransactionLogEntity {
     private String description;
     @Enumerated(EnumType.STRING)
     private TransactionState transactionState;
-    private int originAccount;
+    private String affectedProductId;
+    private LocalDateTime createdAt;
 }

@@ -1,14 +1,15 @@
 package app.domain.ports;
 
+import app.domain.models.User;
 import java.util.List;
 
-import app.domain.models.User;
 public interface UserPort {
-
-    public boolean existsByDocument(String cedula);
-    public User findByDocument(User user);
-    public User findByUsername(String username);
-    public void save(User user);
-    public void delete(User user);
-    public List<User> getAllUsers();
+    void save(User user);
+    void update(User user);
+    void deleteByUserId(Long userId);
+    User findByUserId(Long userId);
+    User findByUsername(String username);
+    List<User> getAllUsers();
+    boolean existsByUsername(String username);
+    boolean existsByUsernameAndUserIdNot(String username, Long userId);
 }
