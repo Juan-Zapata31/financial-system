@@ -1,4 +1,4 @@
-package app.infrastructure.config;
+package app.infrastructure;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;

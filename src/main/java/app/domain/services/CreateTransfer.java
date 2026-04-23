@@ -31,7 +31,7 @@ public class CreateTransfer {
     private BigDecimal approvalThreshold;
 
     public CreateTransfer(TransferPort transferPort, AccountPort accountPort,
-                          TransactionLogService transactionLogService) {
+            TransactionLogService transactionLogService) {
         this.transferPort = transferPort;
         this.accountPort = accountPort;
         this.transactionLogService = transactionLogService;
@@ -88,7 +88,7 @@ public class CreateTransfer {
     }
 
     public void executeTransfer(Transaction transfer, Account origin,
-                                 Account destination, Long userId, String username) {
+            Account destination, Long userId, String username) {
         if (origin.getBalance().compareTo(transfer.getAmount()) < 0) {
             throw new BusinessException("INSUFFICIENT_FUNDS", "Saldo insuficiente en la cuenta de origen");
         }
