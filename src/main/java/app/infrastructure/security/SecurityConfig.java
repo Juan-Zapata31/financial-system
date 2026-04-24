@@ -18,85 +18,87 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+        private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    }
+        public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+                this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable())
-            .sessionManagement(session -> session
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/auth/**").permitAll()
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+                http
+                                .csrf(csrf -> csrf.disable())
+                                .sessionManagement(session -> session
+                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                .authorizeHttpRequests(auth -> auth
+                                                .requestMatchers("/auth/**").permitAll()
 
-                    // InternalAnalyst
-                    .requestMatchers("/analyst/**").hasRole("InternalAnalyst")
-                    .requestMatchers("/admin/users/**").hasRole("InternalAnalyst")
+                                                .requestMatchers(HttpMethod.POST, "/admin/users").permitAll()
+                                                // InternalAnalyst
+                                                .requestMatchers("/analyst/**").hasRole("InternalAnalyst")
+                                                .requestMatchers("/admin/users/**").hasRole("InternalAnalyst")
 
-                    // Teller
-                    .requestMatchers("/teller/**").hasRole("Teller")
+                                                // Teller
+                                                .requestMatchers("/teller/**").hasRole("Teller")
 
-                    // CommercialEmployee
-                    .requestMatchers("/commercial/**")
-                            .hasAnyRole("CommercialEmployee", "InternalAnalyst")
+                                                // CommercialEmployee
+                                                .requestMatchers("/commercial/**")
+                                                .hasAnyRole("CommercialEmployee", "InternalAnalyst")
 
-                    // Loans
-                    .requestMatchers(HttpMethod.POST, "/loans")
-                            .hasAnyRole("CommercialEmployee", "IndividualClient", "CompanyClient")
-                    .requestMatchers(HttpMethod.POST, "/loans/*/approve").hasRole("InternalAnalyst")
-                    .requestMatchers(HttpMethod.POST, "/loans/*/reject").hasRole("InternalAnalyst")
-                    .requestMatchers(HttpMethod.POST, "/loans/*/disburse").hasRole("InternalAnalyst")
-                    .requestMatchers(HttpMethod.GET, "/loans/**")
-                            .hasAnyRole("InternalAnalyst", "CommercialEmployee")
+                                                // Loans
+                                                .requestMatchers(HttpMethod.POST, "/loans")
+                                                .hasAnyRole("CommercialEmployee", "IndividualClient", "CompanyClient")
+                                                .requestMatchers(HttpMethod.POST, "/loans/*/approve")
+                                                .hasRole("InternalAnalyst")
+                                                .requestMatchers(HttpMethod.POST, "/loans/*/reject")
+                                                .hasRole("InternalAnalyst")
+                                                .requestMatchers(HttpMethod.POST, "/loans/*/disburse")
+                                                .hasRole("InternalAnalyst")
+                                                .requestMatchers(HttpMethod.GET, "/loans/**")
+                                                .hasAnyRole("InternalAnalyst", "CommercialEmployee")
 
-                    // IndividualClient
-                    .requestMatchers("/client/individual/**").hasRole("IndividualClient")
+                                                // IndividualClient
+                                                .requestMatchers("/client/individual/**").hasRole("IndividualClient")
 
-                    // CompanyClient
-                    .requestMatchers("/client/company/**").hasRole("CompanyClient")
+                                                // CompanyClient
+                                                .requestMatchers("/client/company/**").hasRole("CompanyClient")
 
-                    // CompanyEmployee
-                    .requestMatchers(HttpMethod.POST, "/company/transactions/**")
-                            .hasRole("CompanyEmployee")
-                    .requestMatchers(HttpMethod.GET, "/company/**")
-                            .hasAnyRole("CompanyEmployee", "CompanySupervisor")
+                                                // CompanyEmployee
+                                                .requestMatchers(HttpMethod.POST, "/company/transactions/**")
+                                                .hasRole("CompanyEmployee")
+                                                .requestMatchers(HttpMethod.GET, "/company/**")
+                                                .hasAnyRole("CompanyEmployee", "CompanySupervisor")
 
-                    // CompanySupervisor
-                    .requestMatchers("/company/approvals/**").hasRole("CompanySupervisor")
-                    .requestMatchers(HttpMethod.POST, "/company/loans")
-                            .hasAnyRole("CompanySupervisor", "CompanyEmployee")
+                                                // CompanySupervisor
+                                                .requestMatchers("/company/approvals/**").hasRole("CompanySupervisor")
+                                                .requestMatchers(HttpMethod.POST, "/company/loans")
+                                                .hasAnyRole("CompanySupervisor", "CompanyEmployee")
 
-                    .anyRequest().authenticated()
-            )
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            .exceptionHandling(ex -> ex
-                    .authenticationEntryPoint((request, response, authException) -> {
-                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                        response.setContentType("application/json;charset=UTF-8");
-                        response.getWriter().write(
-                            "{\"status\":401,\"message\":\"No autenticado: se requiere un token valido\",\"errors\":null}");
-                    })
-                    .accessDeniedHandler((request, response, accessDeniedException) -> {
-                        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                        response.setContentType("application/json;charset=UTF-8");
-                        response.getWriter().write(
-                            "{\"status\":403,\"message\":\"Acceso denegado: no tiene permisos\",\"errors\":null}");
-                    })
-            );
-        return http.build();
-    }
+                                                .anyRequest().authenticated())
+                                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                                .exceptionHandling(ex -> ex
+                                                .authenticationEntryPoint((request, response, authException) -> {
+                                                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                                                        response.setContentType("application/json;charset=UTF-8");
+                                                        response.getWriter().write(
+                                                                        "{\"status\":401,\"message\":\"No autenticado: se requiere un token valido\",\"errors\":null}");
+                                                })
+                                                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                                                        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                                                        response.setContentType("application/json;charset=UTF-8");
+                                                        response.getWriter().write(
+                                                                        "{\"status\":403,\"message\":\"Acceso denegado: no tiene permisos\",\"errors\":null}");
+                                                }));
+                return http.build();
+        }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
+        @Bean
+        public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+                return config.getAuthenticationManager();
+        }
 }

@@ -31,7 +31,7 @@ public class AdminController {
 
     @PutMapping("/{userId}")
     public ResponseEntity<UserResponse> updateUser(@PathVariable Long userId,
-                                                    @Valid @RequestBody UserRequest request) {
+            @Valid @RequestBody UserRequest request) {
         User user = toUser(request);
         user.setUserId(userId);
         adminUseCase.updateUser(user);
