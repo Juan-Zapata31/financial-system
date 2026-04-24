@@ -1,12 +1,14 @@
 package app.domain.ports;
 
+import app.domain.models.Client;
 import java.util.List;
 
 public interface ClientPort {
-
-    public ClientPort saveClient(ClientPort client);
-    public ClientPort getClientById(String userId);
-    public List<ClientPort> getAllClients();
-    public void deleteClient(String userId);
-    public ClientPort updateClient(ClientPort client);
+    Client saveClient(Client client);
+    Client getClientById(Long clientId);
+    Client getClientByDocumentNumber(String documentNumber);
+    List<Client> getAllClients();
+    void deleteClient(Long clientId);
+    Client updateClient(Client client);
+    boolean existsByDocumentNumber(String documentNumber);
 }

@@ -1,11 +1,11 @@
 package app.domain.models;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
 import app.domain.models.enums.Roles;
 import app.domain.models.enums.UserState;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -17,4 +17,5 @@ public class User {
     private String password;
     private Roles roles;
     private UserState userState;
+    private String companyNit;
 }

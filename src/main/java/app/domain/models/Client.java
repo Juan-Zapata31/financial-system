@@ -10,7 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class Client {
-
     private Long clientId;
     private User user;
     private String fullName;

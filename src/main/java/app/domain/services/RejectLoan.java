@@ -1,43 +1,56 @@
 package app.domain.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import app.application.adapters.persistence.entities.BankLoanEntity;
 import app.domain.exceptions.BusinessException;
+import app.domain.exceptions.NotFoundException;
+import app.domain.models.BankLoan;
 import app.domain.models.User;
 import app.domain.models.enums.LoanState;
+import app.domain.models.enums.OperationType;
 import app.domain.models.enums.Roles;
+import app.domain.models.enums.TransactionState;
+import app.domain.models.enums.TransactionType;
 import app.domain.ports.LoanPort;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class RejectLoan {
 
     private final LoanPort loanPort;
+    private final TransactionLogService transactionLogService;
 
-    @Autowired
-    public RejectLoan(LoanPort loanPort) {
+    public RejectLoan(LoanPort loanPort, TransactionLogService transactionLogService) {
         this.loanPort = loanPort;
+        this.transactionLogService = transactionLogService;
     }
 
-    // 🔴 RECHAZAR
-    public BankLoanEntity rejectLoan(String loanId, User user) {
-
-        if (user == null || user.getRoles() != Roles.InternalAnalyst) {
-            throw new BusinessException("NO_PERMISOS_RECHAZAR", "No tiene permisos para rechazar");
+    public BankLoan rejectLoan(int loanId, User analyst) {
+        if (analyst == null || analyst.getRoles() != Roles.InternalAnalyst) {
+            throw new BusinessException("NO_PERMISOS_RECHAZAR", "No tiene permisos para rechazar préstamos");
         }
 
-        BankLoanEntity loan = loanPort.findById(loanId);
+        BankLoan loan = loanPort.findById(loanId);
         if (loan == null) {
-            throw new BusinessException("LOAN_NOT_FOUND", "El préstamo no existe");
+            throw new NotFoundException("El préstamo no existe");
         }
-
         if (loan.getLoanState() != LoanState.PENDING) {
-            throw new BusinessException("INVALID_STATE", "El préstamo no está en estudio");
+            throw new BusinessException("INVALID_STATE", "El préstamo solo puede rechazarse si está en estado PENDING");
         }
 
         loan.setLoanState(LoanState.REJECTED);
+        loan.setAnalystId(analyst.getUserId());
+        BankLoan saved = loanPort.save(loan);
 
-        return loanPort.save(loan);
+        Map<String, Object> detail = new HashMap<>();
+        detail.put("previousState", LoanState.PENDING.name());
+        detail.put("newState", LoanState.REJECTED.name());
+        detail.put("analystId", analyst.getUserId());
+        transactionLogService.log(OperationType.LOAN_REJECTED, TransactionType.LOAN_REPAYMENT,
+                analyst.getUserId(), analyst.getUsername(), TransactionState.FAILED,
+                String.valueOf(loanId), "Préstamo rechazado", detail);
+
+        return saved;
     }
 }

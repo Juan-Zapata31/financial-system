@@ -1,65 +1,54 @@
 package app.domain.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import app.domain.models.User;
-
 import app.domain.exceptions.BusinessException;
+import app.domain.exceptions.NotFoundException;
 import app.domain.models.Transaction;
-import app.domain.models.TransactionLog;
+import app.domain.models.User;
+import app.domain.models.enums.OperationType;
 import app.domain.models.enums.Roles;
 import app.domain.models.enums.TransactionState;
 import app.domain.models.enums.TransactionType;
-import app.domain.ports.TransactionLogPort;
 import app.domain.ports.TransferPort;
-import app.domain.ports.UserPort;
+import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class RejectTransfer {
-    
-    
-    @Autowired
-    private TransferPort transferPort;
 
-    @Autowired
-    private TransactionLogPort transactionLogPort;
+    private final TransferPort transferPort;
+    private final TransactionLogService transactionLogService;
 
-    @Autowired
-    private UserPort userPort;
+    public RejectTransfer(TransferPort transferPort,
+                          TransactionLogService transactionLogService) {
+        this.transferPort = transferPort;
+        this.transactionLogService = transactionLogService;
+    }
 
-    // 🔴 3. RECHAZAR TRANSFERENCIA
-    public void rejectTransfer(String transferId, String responsableUser) {
+    public void rejectTransfer(int transferId, User supervisor) {
+        if (supervisor == null || supervisor.getRoles() != Roles.CompanySupervisor) {
+            throw new BusinessException("UNAUTHORIZED", "Solo el CompanySupervisor puede rechazar transferencias");
+        }
 
         Transaction transfer = transferPort.findById(transferId);
         if (transfer == null) {
-            throw new BusinessException("TRANSFER_NOT_FOUND", "La transferencia no existe");
+            throw new NotFoundException("La transferencia no existe");
         }
-
-        User approver = userPort.findByUsername(responsableUser);
-        if (approver == null) {
-            throw new BusinessException("USER_NOT_FOUND", "El usuario no existe");
-        }
-
-        if (approver.getRoles() != Roles.CompanySupervisor) {
-            throw new BusinessException("UNAUTHORIZED", "Sin permisos");
-        }
-
         if (transfer.getTransactionState() != TransactionState.PENDING) {
-            throw new BusinessException("INVALID_STATE", "No está pendiente");
+            throw new BusinessException("INVALID_STATE", "La transferencia no está en estado PENDING");
         }
 
         transfer.setTransactionState(TransactionState.FAILED);
+        transfer.setApproverUserId(supervisor.getUserId());
         transferPort.save(transfer);
 
-        transactionLogPort.save(new TransactionLog(
-                0,
-                TransactionType.TRANSFER,
-                responsableUser,
-                "Transferencia rechazada",
-                TransactionState.FAILED,
-                null
-        ));
+        Map<String, Object> detail = new HashMap<>();
+        detail.put("transferId", transferId);
+        detail.put("rejectedBy", supervisor.getUserId());
+        detail.put("newState", TransactionState.FAILED.name());
+        transactionLogService.log(OperationType.TRANSFER_REJECTED, TransactionType.TRANSFER,
+                supervisor.getUserId(), supervisor.getUsername(), TransactionState.FAILED,
+                String.valueOf(transferId), "Transferencia rechazada", detail);
     }
 }

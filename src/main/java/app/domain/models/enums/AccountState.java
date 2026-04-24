@@ -1,7 +1,4 @@
 package app.domain.models.enums;
-
 public enum AccountState {
-    ACTIVE,
-    INACTIVE,
-    SUSPENDED;
+    ACTIVE, INACTIVE, SUSPENDED, BLOCKED, CANCELLED
 }

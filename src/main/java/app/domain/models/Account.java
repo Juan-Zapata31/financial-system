@@ -1,13 +1,15 @@
 package app.domain.models;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import java.math.BigDecimal;
-import java.time.LocalDate;
+
 import app.domain.models.enums.AccountState;
 import app.domain.models.enums.AccountType;
 import app.domain.models.enums.Currency;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Getter
 @Setter

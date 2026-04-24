@@ -1,18 +1,17 @@
 package app.domain.models;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class GeneralBankingProduct {
-
     private int idGeneralBankingProduct;
     private String nameGeneralBankingProduct;
     private String categoryGeneralBankingProduct;
-    private boolean RequiresApproval;
+    private boolean requiresApproval;
 }

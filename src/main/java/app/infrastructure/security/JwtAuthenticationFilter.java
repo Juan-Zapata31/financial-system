@@ -38,19 +38,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             if (jwtUtil.isTokenValid(token)) {
                 String username = jwtUtil.extractUsername(token);
-                String document = jwtUtil.extractDocument(token);
                 String role = jwtUtil.extractRole(token);
+                Long userId = jwtUtil.extractUserId(token);
+                String companyNit = jwtUtil.extractCompanyNit(token);
 
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                                username,
-                                null,
-                                List.of(new SimpleGrantedAuthority("ROLE_" + role))
-                        );
-                // Stores the user document in the authentication details
-                // so controllers can retrieve it via authentication.getDetails()
-                authentication.setDetails(document);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                UsernamePasswordAuthenticationToken auth =
+                        new UsernamePasswordAuthenticationToken(username, null,
+                                List.of(new SimpleGrantedAuthority("ROLE_" + role)));
+                auth.setDetails(new FinancialAuthDetails(userId, username, role, companyNit));
+                SecurityContextHolder.getContext().setAuthentication(auth);
             }
         } catch (ExpiredJwtException e) {
             SecurityContextHolder.clearContext();

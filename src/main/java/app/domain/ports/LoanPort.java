@@ -1,12 +1,11 @@
 package app.domain.ports;
 
+import app.domain.models.BankLoan;
 import java.util.List;
 
-import app.application.adapters.persistence.entities.BankLoanEntity;
-
 public interface LoanPort {
-
-    BankLoanEntity save(BankLoanEntity loan);
-    BankLoanEntity findById(String loanId);
-    List<BankLoanEntity> findByClientId(Integer clientId);
+    BankLoan save(BankLoan loan);
+    BankLoan findById(int loanId);
+    List<BankLoan> findByClientId(Long clientId);
+    List<BankLoan> findAll();
 }

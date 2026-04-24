@@ -1,53 +1,124 @@
 package app.application.adapters.api.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import app.application.adapters.api.request.ApproveLoanRequest;
+import app.application.adapters.api.request.LoanRequest;
+import app.application.adapters.api.response.LoanResponse;
+import app.application.usecases.AnalystUseCase;
+import app.application.usecases.CommercialUseCase;
+import app.domain.models.BankLoan;
+import app.domain.models.Client;
+import app.domain.models.User;
+import app.domain.ports.ClientPort;
+import app.domain.ports.UserPort;
+import app.infrastructure.security.FinancialAuthDetails;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import app.application.adapters.persistence.entities.BankLoanEntity;
-import app.domain.models.User;
-import app.domain.services.ApproveLoan;
-import app.domain.services.DisburseLoan;
-import app.domain.services.RejectLoan;
-import app.domain.services.RequestLoan;
+import java.util.List;
 
 @RestController
 @RequestMapping("/loans")
 public class LoanController {
 
-    @Autowired
-    private RequestLoan requestLoan;
+    private final AnalystUseCase analystUseCase;
+    private final CommercialUseCase commercialUseCase;
+    private final UserPort userPort;
+    private final ClientPort clientPort;
 
-    @Autowired
-    private ApproveLoan approveLoan;
+    public LoanController(AnalystUseCase analystUseCase, CommercialUseCase commercialUseCase,
+                          UserPort userPort, ClientPort clientPort) {
+        this.analystUseCase = analystUseCase;
+        this.commercialUseCase = commercialUseCase;
+        this.userPort = userPort;
+        this.clientPort = clientPort;
+    }
 
-    @Autowired
-    private RejectLoan rejectLoan;
-
-    @Autowired
-    private DisburseLoan disburseLoan;
-
-    // 🟢 Crear solicitud
+    // CommercialEmployee or IndividualClient requests a loan
     @PostMapping
-    public BankLoanEntity requestLoan(@RequestBody BankLoanEntity loan) {
-        return requestLoan.requestLoan(loan);
+    public ResponseEntity<LoanResponse> requestLoan(@Valid @RequestBody LoanRequest request,
+                                                     Authentication authentication) {
+        FinancialAuthDetails details = (FinancialAuthDetails) authentication.getDetails();
+        User requester = userPort.findByUserId(details.getUserId());
+        BankLoan loan = toLoan(request);
+        BankLoan saved = commercialUseCase.requestLoan(loan, requester);
+        return ResponseEntity.status(HttpStatus.CREATED).body(toLoanResponse(saved));
     }
 
-    // 🔵 Aprobar préstamo
+    // InternalAnalyst approves
     @PostMapping("/{id}/approve")
-    public BankLoanEntity approveLoan(@PathVariable String id, @RequestBody User user) {
-        return approveLoan.approveLoan(id, user);
+    public ResponseEntity<LoanResponse> approveLoan(@PathVariable int id,
+                                                     @Valid @RequestBody ApproveLoanRequest request,
+                                                     Authentication authentication) {
+        FinancialAuthDetails details = (FinancialAuthDetails) authentication.getDetails();
+        User analyst = userPort.findByUserId(details.getUserId());
+        BankLoan saved = analystUseCase.approveLoan(id, request.getApprovedAmount(),
+                request.getInterestRate(), analyst);
+        return ResponseEntity.ok(toLoanResponse(saved));
     }
 
-    // 🔴 Rechazar préstamo
+    // InternalAnalyst rejects
     @PostMapping("/{id}/reject")
-    public BankLoanEntity rejectLoan(@PathVariable String id, @RequestBody User user) {
-        return rejectLoan.rejectLoan(id, user);
+    public ResponseEntity<LoanResponse> rejectLoan(@PathVariable int id,
+                                                    Authentication authentication) {
+        FinancialAuthDetails details = (FinancialAuthDetails) authentication.getDetails();
+        User analyst = userPort.findByUserId(details.getUserId());
+        BankLoan saved = analystUseCase.rejectLoan(id, analyst);
+        return ResponseEntity.ok(toLoanResponse(saved));
     }
 
-    // 💰 Desembolso
+    // InternalAnalyst disburses
     @PostMapping("/{id}/disburse")
-    public String disburseLoan(@PathVariable String id) {
-        disburseLoan.disburseLoan(id);
-        return "Préstamo desembolsado correctamente";
+    public ResponseEntity<String> disburseLoan(@PathVariable int id,
+                                               Authentication authentication) {
+        FinancialAuthDetails details = (FinancialAuthDetails) authentication.getDetails();
+        User analyst = userPort.findByUserId(details.getUserId());
+        analystUseCase.disburseLoan(id, analyst);
+        return ResponseEntity.ok("Préstamo desembolsado correctamente");
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<LoanResponse> findById(@PathVariable int id) {
+        return ResponseEntity.ok(toLoanResponse(analystUseCase.findLoanById(id)));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<LoanResponse>> findAll() {
+        List<LoanResponse> loans = analystUseCase.findAllLoans()
+                .stream().map(LoanController::toLoanResponse).toList();
+        return ResponseEntity.ok(loans);
+    }
+
+    @GetMapping("/client/{clientId}")
+    public ResponseEntity<List<LoanResponse>> findByClient(@PathVariable Long clientId) {
+        List<LoanResponse> loans = analystUseCase.findLoansByClientId(clientId)
+                .stream().map(LoanController::toLoanResponse).toList();
+        return ResponseEntity.ok(loans);
+    }
+
+    // ── Mappers ────────────────────────────────────────────────────────────────
+
+    private BankLoan toLoan(LoanRequest req) {
+        BankLoan l = new BankLoan();
+        l.setBankLoanType(req.getBankLoanType());
+        l.setRequestedAmount(req.getRequestedAmount());
+        l.setTermMonths(req.getTermMonths());
+        l.setDestinationAccount(req.getDestinationAccount() != null ? req.getDestinationAccount() : 0);
+        if (req.getClientId() != null) {
+            Client client = clientPort.getClientById(req.getClientId());
+            l.setClient(client);
+        }
+        return l;
+    }
+
+    static LoanResponse toLoanResponse(BankLoan l) {
+        Long clientId = l.getClient() != null ? l.getClient().getClientId() : null;
+        String clientName = l.getClient() != null ? l.getClient().getFullName() : null;
+        return new LoanResponse(l.getBankLoanId(), l.getBankLoanType(), clientId, clientName,
+                l.getRequestedAmount(), l.getApprovedAmount(), l.getInterestRate(),
+                l.getTermMonths(), l.getLoanState(), l.getApprovedDate(),
+                l.getDisbursementDate(), l.getDestinationAccount() == 0 ? null : l.getDestinationAccount());
     }
 }
