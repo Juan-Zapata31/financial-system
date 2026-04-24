@@ -33,7 +33,7 @@ public class SecurityConfig {
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers("/auth/**").permitAll()
 
-                                                .requestMatchers(HttpMethod.POST, "/admin/users").permitAll()
+                                                .requestMatchers(HttpMethod.POST, "/admin/users").permitAll() // Permitir creación de usuarios sin autenticación (ajustar según necesidades) 
                                                 // InternalAnalyst
                                                 .requestMatchers("/analyst/**").hasRole("InternalAnalyst")
                                                 .requestMatchers("/admin/users/**").hasRole("InternalAnalyst")
