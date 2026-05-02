@@ -30,7 +30,7 @@ public class CompanyController {
     private final ClientPort clientPort;
 
     public CompanyController(CompanyUseCase companyUseCase, UserPort userPort,
-                              ClientPort clientPort) {
+            ClientPort clientPort) {
         this.companyUseCase = companyUseCase;
         this.userPort = userPort;
         this.clientPort = clientPort;
@@ -56,7 +56,7 @@ public class CompanyController {
 
     @PostMapping("/loans")
     public ResponseEntity<LoanResponse> requestLoan(@Valid @RequestBody LoanRequest request,
-                                                     Authentication authentication) {
+            Authentication authentication) {
         FinancialAuthDetails details = (FinancialAuthDetails) authentication.getDetails();
         User user = userPort.findByUserId(details.getUserId());
         BankLoan loan = toLoan(request);
@@ -91,7 +91,7 @@ public class CompanyController {
 
     @PostMapping("/approvals/{transferId}/approve")
     public ResponseEntity<String> approveTransfer(@PathVariable int transferId,
-                                                   Authentication authentication) {
+            Authentication authentication) {
         FinancialAuthDetails details = (FinancialAuthDetails) authentication.getDetails();
         User supervisor = userPort.findByUserId(details.getUserId());
         companyUseCase.approveTransfer(transferId, supervisor, details.getCompanyNit());
@@ -100,7 +100,7 @@ public class CompanyController {
 
     @PostMapping("/approvals/{transferId}/reject")
     public ResponseEntity<String> rejectTransfer(@PathVariable int transferId,
-                                                  Authentication authentication) {
+            Authentication authentication) {
         FinancialAuthDetails details = (FinancialAuthDetails) authentication.getDetails();
         User supervisor = userPort.findByUserId(details.getUserId());
         companyUseCase.rejectTransfer(transferId, supervisor, details.getCompanyNit());

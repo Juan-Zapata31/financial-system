@@ -3,6 +3,7 @@ package app.application.usecases;
 import app.domain.exceptions.NotFoundException;
 import app.domain.models.BankLoan;
 import app.domain.models.Client;
+import app.domain.models.EnterpriseClient;
 import app.domain.models.NaturalClient;
 import app.domain.models.User;
 import app.domain.ports.ClientPort;
@@ -20,8 +21,8 @@ public class CommercialUseCase {
     private final ClientPort clientPort;
 
     public CommercialUseCase(RequestLoan requestLoan, FindLoan findLoan,
-                              CreateClient createClient,
-                              ClientPort clientPort) {
+            CreateClient createClient,
+            ClientPort clientPort) {
         this.requestLoan = requestLoan;
         this.findLoan = findLoan;
         this.createClient = createClient;
@@ -31,8 +32,13 @@ public class CommercialUseCase {
     // ── Clients ───────────────────────────────────────────────────────────────
 
     public Client createNaturalClient(NaturalClient client, Long requestingUserId,
-                                      String requestingUsername) {
+            String requestingUsername) {
         return createClient.createNaturalClient(client, requestingUserId, requestingUsername);
+    }
+
+    public Client createEnterpriseClient(EnterpriseClient client, Long requestingUserId,
+            String requestingUsername) {
+        return createClient.createEnterpriseClient(client, requestingUserId, requestingUsername);
     }
 
     public Client findClientById(Long clientId) {
@@ -61,7 +67,9 @@ public class CommercialUseCase {
         return requestLoan.requestLoan(loan, commercial.getUserId(), commercial.getUsername());
     }
 
-    public BankLoan findLoanById(int id) { return findLoan.findById(id); }
+    public BankLoan findLoanById(int id) {
+        return findLoan.findById(id);
+    }
 
     public List<BankLoan> findLoansByClientId(Long clientId) {
         return findLoan.findByClientId(clientId);

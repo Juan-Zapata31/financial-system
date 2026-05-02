@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import app.application.adapters.api.request.EnterpriseClientRequest;
+import app.domain.models.EnterpriseClient;
 
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class CommercialController {
     private final ClientPort clientPort;
 
     public CommercialController(CommercialUseCase commercialUseCase,
-                                 UserPort userPort, ClientPort clientPort) {
+            UserPort userPort, ClientPort clientPort) {
         this.commercialUseCase = commercialUseCase;
         this.userPort = userPort;
         this.clientPort = clientPort;
@@ -45,6 +47,19 @@ public class CommercialController {
         FinancialAuthDetails details = (FinancialAuthDetails) authentication.getDetails();
         NaturalClient client = toNaturalClient(request);
         Client saved = commercialUseCase.createNaturalClient(
+                client, details.getUserId(), details.getUsername());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(toClientResponse(saved));
+    }
+
+    @PostMapping("/clients/enterprise")
+    public ResponseEntity<ClientPersonResponse> createEnterpriseClient(
+            @Valid @RequestBody EnterpriseClientRequest request,
+            Authentication authentication) {
+
+        FinancialAuthDetails details = (FinancialAuthDetails) authentication.getDetails();
+        EnterpriseClient client = toEnterpriseClient(request);
+        Client saved = commercialUseCase.createEnterpriseClient(
                 client, details.getUserId(), details.getUsername());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(toClientResponse(saved));
@@ -117,6 +132,24 @@ public class CommercialController {
         return client;
     }
 
+    private static EnterpriseClient toEnterpriseClient(EnterpriseClientRequest req) {
+        EnterpriseClient client = new EnterpriseClient();
+        client.setFullName(req.getFullName());
+        client.setDocumentNumber(req.getNit());
+        client.setEmail(req.getEmail());
+        client.setPhone(req.getPhone());
+        client.setAddress(req.getAddress());
+        client.setCompanyName(req.getCompanyName());
+        client.setNit(req.getNit());
+        client.setLegalRepresentative(req.getLegalRepresentative());
+        if (req.getUserId() != null) {
+            User user = new User();
+            user.setUserId(req.getUserId());
+            client.setUser(user);
+        }
+        return client;
+    }
+
     // Safe mapper - works for both NaturalClient and EnterpriseClient
     static ClientPersonResponse toClientResponse(Client client) {
         Long userId = client.getUser() != null ? client.getUser().getUserId() : null;
@@ -138,8 +171,7 @@ public class CommercialController {
                 client.getAddress(),
                 birthDate,
                 userId,
-                username
-        );
+                username);
     }
 
     private BankLoan toLoan(LoanRequest req) {
@@ -148,7 +180,8 @@ public class CommercialController {
         l.setRequestedAmount(req.getRequestedAmount());
         l.setTermMonths(req.getTermMonths());
         l.setDestinationAccount(req.getDestinationAccount() != null
-                ? req.getDestinationAccount() : 0);
+                ? req.getDestinationAccount()
+                : 0);
         if (req.getClientId() != null) {
             Client client = clientPort.getClientById(req.getClientId());
             l.setClient(client);
